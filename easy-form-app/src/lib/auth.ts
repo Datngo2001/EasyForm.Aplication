@@ -1,4 +1,4 @@
-import { AuthOptions } from "next-auth";
+import { AuthOptions, Session } from "next-auth";
 import GoogleProvider from "next-auth/providers/google"
 
 export const authOptions: AuthOptions = {
@@ -11,10 +11,17 @@ export const authOptions: AuthOptions = {
     callbacks: {
         async jwt({ token, account, profile, user }) {
             if (account) {
-                token.accessToken = account.access_token;
+                token.idToken = account.id_token;
                 token.sub = account.userId;
             }
             return token
+        },
+        async session({ session, token, user }) {
+            return { ...session, idToken: token.idToken } as AppSession;
         }
     }
+}
+
+export interface AppSession extends Session {
+    idToken?: string
 }

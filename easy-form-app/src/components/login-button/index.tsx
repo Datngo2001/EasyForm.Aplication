@@ -1,9 +1,10 @@
 "use client";
 
-import { useSession, signIn, signOut } from "next-auth/react";
+import useAppSession from "@/hooks/useAppSession";
+import { signIn, signOut } from "next-auth/react";
 
 export default function LoginButton() {
-  const { data: session } = useSession();
+  const { data: session } = useAppSession();
 
   if (session) {
     return (
